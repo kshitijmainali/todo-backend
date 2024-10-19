@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import { TodoService } from './todo.service';
-import { RequestWithBody } from '@/types/genericTypes';
+import { RequestWithBody, RequestWithParamsAndBody } from '@/types/genericTypes';
 import { CreateTodoDto } from './dto/input/createTodo';
 import { formatResponse } from '@/utils/response';
 import { succMessage } from '@/constant/language';
+import { UpdateTodoDto } from './dto/input/updateTodo';
 
 export class TodoController {
   private readonly todoService: TodoService;
@@ -14,6 +15,28 @@ export class TodoController {
   getTodos = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const todos = await this.todoService.getTodos();
+      res.json(formatResponse(todos, succMessage.listedSuccessFully('Todo')));
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  getTodoById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const todos = await this.todoService.getTodos();
+      res.json(formatResponse(todos, succMessage.listedSuccessFully('Todo')));
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  updateTodo = async (
+    req: RequestWithParamsAndBody<{ id: string }, UpdateTodoDto>,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const todos = await this.todoService.updateTodoById(req.params.id, req.body);
       res.json(formatResponse(todos, succMessage.listedSuccessFully('Todo')));
     } catch (e) {
       next(e);

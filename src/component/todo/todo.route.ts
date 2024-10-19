@@ -7,8 +7,11 @@ const todoRouter = express.Router();
 
 const todoController = new TodoController();
 
-todoRouter.get('/', todoController.getTodos);
+todoRouter
+  .route('/')
+  .get(todoController.getTodos)
+  .post(validationMiddleware(createTodoSchema), todoController.createTodos);
 
-todoRouter.post('/', validationMiddleware(createTodoSchema), todoController.createTodos);
+todoRouter.route('/:id').get(todoController.getTodoById).patch(todoController.updateTodo);
 
 export default todoRouter;

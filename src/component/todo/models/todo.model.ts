@@ -5,6 +5,10 @@ export interface ITodo {
   description: string;
   dateTime: string;
 }
+export enum TodoStatus {
+  upcoming = 'upcoming',
+  done = 'done',
+}
 
 export default interface ITodoModel extends Document, ITodo {}
 
@@ -24,6 +28,11 @@ const todoSchema = new Schema(
     dateTime: {
       type: Date,
       default: Date.now,
+    },
+    status: {
+      type: String,
+      default: TodoStatus.upcoming,
+      enum: TodoStatus,
     },
   },
   {

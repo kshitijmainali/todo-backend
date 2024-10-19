@@ -14,13 +14,6 @@ export const createTodoSchema = Joi.object({
   }),
 });
 
-// Define validation schema for updating a todo item
-export const updateTodoSchema = Joi.object({
-  name: Joi.string().min(3),
-  description: Joi.string().max(500),
-  dateTime: Joi.string().uri(),
-});
-
 export interface CreateTodoDto {
   name: string;
   description: string;
