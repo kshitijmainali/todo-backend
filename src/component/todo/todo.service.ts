@@ -1,14 +1,23 @@
-import { TodoModel } from './models/todo.model'
-import { TodoRepository } from './models/todo.repository'
+import { CreateTodoDto } from './dto/input/createTodo';
+import { TodoModel } from './models/todo.model';
+import { TodoRepository } from './models/todo.repository';
 
 export class TodoService {
-  private todoRepository: TodoRepository
+  private todoRepository: TodoRepository;
 
   constructor() {
-    this.todoRepository = new TodoRepository(TodoModel)
+    this.todoRepository = new TodoRepository(TodoModel);
   }
 
   async getTodos() {
-    return await this.todoRepository.find({})
+    return await this.todoRepository.find({});
+  }
+
+  async createTodos(body: CreateTodoDto) {
+    return await this.todoRepository.create({
+      name: body.name,
+      description: body.description,
+      dateTime: body.dateTime,
+    });
   }
 }

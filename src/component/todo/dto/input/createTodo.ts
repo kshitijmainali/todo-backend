@@ -1,4 +1,4 @@
-import Joi from 'joi'
+import Joi from 'joi';
 
 // Define validation schema for creating a todo item
 export const createTodoSchema = Joi.object({
@@ -12,11 +12,17 @@ export const createTodoSchema = Joi.object({
   dateTime: Joi.date().iso().required().messages({
     'date.base': 'Invalid date format. Please use ISO 8601 format',
   }),
-})
+});
 
 // Define validation schema for updating a todo item
 export const updateTodoSchema = Joi.object({
   name: Joi.string().min(3),
   description: Joi.string().max(500),
-  image: Joi.string().uri(),
-})
+  dateTime: Joi.string().uri(),
+});
+
+export interface CreateTodoDto {
+  name: string;
+  description: string;
+  dateTime: Date;
+}

@@ -1,9 +1,9 @@
-import { Schema, Document, model } from 'mongoose'
+import { Schema, Document, model } from 'mongoose';
 
 export interface ITodo {
-  name: string
-  description: string
-  image: string
+  name: string;
+  description: string;
+  dateTime: string;
 }
 
 export default interface ITodoModel extends Document, ITodo {}
@@ -29,6 +29,6 @@ const todoSchema = new Schema(
   {
     timestamps: true,
   },
-)
+);
 
-export const TodoModel = model<ITodoModel>('Store', todoSchema)
+export const TodoModel = model<ITodoModel>('Store', todoSchema);

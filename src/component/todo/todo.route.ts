@@ -1,14 +1,14 @@
-import express from 'express'
-import { TodoController } from './todo.controller'
-import validationMiddleware from '@/middlewares/validation'
-import { createTodoSchema } from './dto/input/createTodo'
+import express from 'express';
+import { TodoController } from './todo.controller';
+import validationMiddleware from '@/middlewares/validation';
+import { createTodoSchema } from './dto/input/createTodo';
 
-const todoRouter = express.Router()
+const todoRouter = express.Router();
 
-const todoController = new TodoController()
+const todoController = new TodoController();
 
-todoRouter.get('/', validationMiddleware(createTodoSchema), async (req, res, next) => {
-  todoController.getTodos(req, res, next)
-})
+todoRouter.get('/', todoController.getTodos);
 
-export default todoRouter
+todoRouter.post('/', validationMiddleware(createTodoSchema), todoController.createTodos);
+
+export default todoRouter;
