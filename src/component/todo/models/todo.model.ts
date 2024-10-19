@@ -20,9 +20,10 @@ const todoSchema = new Schema(
       required: true,
       maxlength: 500,
     },
-    image: {
-      type: String,
-      required: true,
+    // this will be utc timestamp for todo deadline
+    dateTime: {
+      type: Date,
+      default: Date.now,
     },
   },
   {
