@@ -13,6 +13,10 @@ todoRouter
   .get(validationMiddleware(paginationSchema, ValidationSource.query), todoController.getTodos)
   .post(validationMiddleware(createTodoSchema), todoController.createTodos);
 
-todoRouter.route('/:id').get(todoController.getTodoById).patch(todoController.updateTodo);
+todoRouter
+  .route('/:id')
+  .get(todoController.getTodoById)
+  .patch(todoController.updateTodo)
+  .delete(todoController.removeTodoById);
 
 export default todoRouter;

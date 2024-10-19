@@ -43,6 +43,19 @@ export class TodoController {
     }
   };
 
+  removeTodoById = async (
+    req: RequestWithBody<{ id: string }>,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    try {
+      const todos = await this.todoService.removeTodoById(req.params.id);
+      res.json(formatResponse(todos, succMessage.listedSuccessFully('Todo')));
+    } catch (e) {
+      next(e);
+    }
+  };
+
   createTodos = async (req: RequestWithBody<CreateTodoDto>, res: Response, next: NextFunction) => {
     try {
       const todo = await this.todoService.createTodos(req.body);

@@ -39,6 +39,10 @@ export class TodoService {
     return await this.todoRepository.updateById(id, { ...body }, { new: true });
   }
 
+  async removeTodoById(id: string) {
+    return await this.todoRepository.deleteById(id);
+  }
+
   async createTodos(body: CreateTodoDto) {
     return await this.todoRepository.create({
       name: body.name,
