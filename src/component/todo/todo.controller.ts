@@ -2,9 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import { TodoService } from './todo.service';
 import { RequestWithBody, RequestWithParamsAndBody } from '@/types/genericTypes';
 import { CreateTodoDto } from './dto/input/createTodo';
-import { formatResponse } from '@/utils/response';
 import { succMessage } from '@/constant/language';
 import { UpdateTodoDto } from './dto/input/updateTodo';
+import { formatResponse } from '@/utils/helpers';
 
 export class TodoController {
   private readonly todoService: TodoService;
@@ -14,7 +14,7 @@ export class TodoController {
 
   getTodos = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const todos = await this.todoService.getTodos();
+      const todos = await this.todoService.getTodos(req.query as any);
       res.json(formatResponse(todos, succMessage.listedSuccessFully('Todo')));
     } catch (e) {
       next(e);
@@ -23,7 +23,7 @@ export class TodoController {
 
   getTodoById = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const todos = await this.todoService.getTodos();
+      const todos = await this.todoService.getTodoById(req.params.id);
       res.json(formatResponse(todos, succMessage.listedSuccessFully('Todo')));
     } catch (e) {
       next(e);
