@@ -3,7 +3,7 @@ import ITodoModel from './todo.model';
 import { Model } from 'mongoose';
 
 export class TodoRepository extends BaseRepo<ITodoModel> {
-  private projection: object;
+  private projection: Record<string, any>;
 
   constructor(private todoModel: Model<ITodoModel>) {
     super(todoModel);
