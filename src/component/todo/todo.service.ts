@@ -3,6 +3,7 @@ import { TodoModel } from './models/todo.model';
 import { TodoRepository } from './models/todo.repository';
 import { UpdateTodoDto } from './dto/input/updateTodo';
 import { Pagination } from '@/common/dto/pagination';
+import { errorMessage } from '@/constant/language';
 
 export class TodoService {
   private todoRepository: TodoRepository;
@@ -13,7 +14,6 @@ export class TodoService {
 
   async getTodos(params: Pagination) {
     const pipelineStage = [];
-
     if (params.search) {
       pipelineStage.push({
         $match: {
@@ -25,9 +25,15 @@ export class TodoService {
       });
     }
 
+    if (params.statusFilter) {
+      const statusFilter = params.statusFilter.split(',');
+      console.log('first', statusFilter);
+      pipelineStage.push({ $match: { status: { $in: statusFilter } } });
+    }
+
     return await this.todoRepository.aggregatePaginate(pipelineStage, {
-      limit: params.limit || 10,
-      skip: params.skip || 0,
+      limit: Number(params.limit) || 10,
+      skip: Number(params.skip) || 0,
     });
   }
 
@@ -36,6 +42,9 @@ export class TodoService {
   }
 
   async updateTodoById(id: string, body: UpdateTodoDto) {
+    if (body.dateTime && new Date(body.dateTime) < new Date()) {
+      throw new Error(errorMessage.dateCannotBePast);
+    }
     return await this.todoRepository.updateById(id, { ...body }, { new: true });
   }
 
@@ -44,6 +53,10 @@ export class TodoService {
   }
 
   async createTodos(body: CreateTodoDto) {
+    if (new Date(body.dateTime) < new Date()) {
+      throw new Error(errorMessage.dateCannotBePast);
+    }
+
     return await this.todoRepository.create({
       name: body.name,
       description: body.description,
